@@ -1,0 +1,6 @@
+#!/bin/bash
+
+debian-systemd-invoke disable openminder;
+debian-systemd-invoke stop openminder;
+
+exit 0;

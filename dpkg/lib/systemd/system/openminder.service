@@ -1,0 +1,10 @@
+[Unit]
+Description=Autogrow OpenMinder
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/openminder -c /etc/openminder.yml
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+DIR=$1;
+GOPATH=`mktemp -d`;
+repo="github.com/autogrow/openminder";
+
+export $GOPATH;
+
+go get $repo;
+cd "$GOPATH/src/$repo";
+go get ./...;
+
+GOARCH=arm go build -o $DIR/usr/bin/openminder $repo/cmd/openminder;
+GOARCH=arm go build -o $DIR/usr/bin/omcli $repo/cmd/omcli;
+
+rm -fr $GOPATH;
+
+exit 0;

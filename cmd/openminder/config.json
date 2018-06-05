@@ -1,0 +1,12 @@
+{
+    "irrig_tb_gpio": "GPIO5",
+    "runoff_tb_gpio": "GPIO6",
+    "port": "3232",
+    "scan_timeout": 120,
+    "irrig_ec_probe": "",
+    "runoff_ec_probe": "",
+    "tty": "/dev/ttyUSB0",
+    "drippers_per_plant": 0,
+    "runoff_drippers": 0,
+    "irrig_drippers": 0
+}

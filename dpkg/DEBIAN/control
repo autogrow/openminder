@@ -1,0 +1,12 @@
+Package: openminder
+Version: 0.0.1
+Section: misc
+Priority: optional
+Architecture: armhf
+Maintainer: Robert McLeod <robert@autogrow.com>
+Essential: no
+Homepage: https://github.com/autogrow/openminder
+Installed-Size: 41
+Description: Autogrow OpenMinder Hat REST API
+  This package contains the REST API that interfaces with
+  the Autogrow OpenMinder hat for the Raspberry Pi

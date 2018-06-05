@@ -1,0 +1,6 @@
+#!/bin/bash
+
+debian-systemd-invoke enable openminder;
+debian-systemd-invoke start openminder;
+
+exit 0;
