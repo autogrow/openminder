@@ -70,7 +70,7 @@ See `openminder -h` for more information.
 
 ### API Endpoints
 
-The main interaction with the binary is via the API.  See the [API](https://lab.autogrow.com/docs/en/om-api.html) page for docs for more detail.
+The main interaction with the binary is via the API.  See the [API](https://lab.autogrow.com/docs/en/om-api.html) page for more detail.
 
 ## Calibration
 
