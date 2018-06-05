@@ -84,3 +84,7 @@ represents.  To set the runoff tipping bucket to 5 mls per tip you could do:
 
 Calibrating the EC and pH probes required the use of the companion CLI tool `omcli`.  This provides
 a series of prompts to help calibrate the probe in place.
+
+## Contributing
+
+We accept pull requests.  If you need any help, please don't hesitate to open an issue.
