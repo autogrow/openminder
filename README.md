@@ -6,7 +6,7 @@ Part of Autogrows open initiative, this project is an open source API to be used
 the open source OpenMinder hat for the RaspberryPi.  When coupled with the hardware this server will read 
 and report via a REST API the readings for:
 
-* 2 EC probes
+* 2 Autogrow Intelligent EC probes
 * 2 pH probes
 * 2 tipping buckets
 
@@ -14,7 +14,7 @@ This allows anyone to build a device that can monitor the rootzone of their plan
 use of water and fertigation ingredients to ensure a happy plant.  This is done by measuring the water going
 into the plants on the irrigation side, as well as coming out on the runoff side, thus allowing comparisons.
 
-You can also use the [Sample OpenMinder Dashboard](https://github.com/autogrow/openminder-dash) to add a web interface that shows the readings from the REST API.
+You can also use the [Sample OpenMinder Dashboard](https://github.com/autogrow/openminder-sample-dashboard) to add a web interface that shows the readings from the REST API.
 
 ## Getting Started
 
@@ -27,12 +27,14 @@ The following is a quick getting started overview:
 1. Calibrate your probes and tipping buckets
 1. Call the readings endpoint for the API `curl http://<ip>:3232/v1/readings`
 
+See the [Getting Started](https://lab.autogrow.com/docs/en/om-getting-started.html) page for more detail.
+
 ## Installing
 
 You can install the package from the [Autogrow Debian Repository](https://packagecloud.io/autogrow/public):
 
     curl -s https://packagecloud.io/install/repositories/autogrow/public/script.deb.sh | sudo bash
-    apt-get install openminder
+    sudo apt-get install openminder
 
 ## Building
 
@@ -68,52 +70,7 @@ See `openminder -h` for more information.
 
 ### API Endpoints
 
-The following API endpoints are available:
-
-#### GET /v1/readings
-
-This endpoint retrieves all the readings detected from the OpenMinder hat:
-
-    $ curl http://<ip>:3232/v1/readings
-    {
-        "irrig_adc": 0,
-        "irrig_ph_raw": 0,
-        "irrig_ph": 0,
-        "runoff_adc": 0,
-        "runoff_ph_raw": 0,
-        "runoff_ph": 0,
-        "irrig_tips": 0,
-        "irrig_volume": 0,
-        "runoff_tips": 0,
-        "runoff_volume": 0,
-        "irrig_ec": 0,
-        "irrig_ec_raw": 0,
-        "irrig_ectemp": 0,
-        "runoff_ec": 0,
-        "runoff_ec_raw": 0,
-        "runoff_ectemp": 0,
-        "runoff_ratio": 0
-    }
-
-**Return codes**:
-
-* 200 - all good
-
-#### PUT /v1/readings/calibrate/:field/:scale/:offset
-
-This endpoint sets the calibration for a specific reading.  The `:field` segment refers to a
-reading field from the `/v1/readings` endpoint.  The calibration consists of a scale and an
-offset which is applied to the reading: `(reading * scale) + offset`
-
-    $ curl -XPUT http://<ip>:3232/v1/readings/calibrate/irrig_ph/0.345233332/1.2020233
-
-It will return nothing if successful.
-
-**Return codes**:
-
-* 204 - all good
-* 400 - forgot to include `:field`, `:scale` or `:offset`
-* 500 - failed to save calibration for unknown reason
+The main interaction with the binary is via the API.  See the [API](https://lab.autogrow.com/docs/en/om-api.html) page for docs for more detail.
 
 ## Calibration
 
@@ -121,7 +78,7 @@ Some readings need to be calibrated to make any sense.  For instance to turn the
 a volume reading, the minder needs to know how many millilitres each tip of the tipping bucket
 represents.  To set the runoff tipping bucket to 5 mls per tip you could do:
 
-    curl -XPUT http://<ip>:3232/v1/readings/calibrate/irrig_tb/5.0/0
+    curl -XPUT http://<ip>:3232/v1/calibrations/irrig_tb/5.0/0
 
 ### Probes
 
