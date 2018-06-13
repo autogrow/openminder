@@ -20,7 +20,7 @@ var version = "1.0.0"
 
 func main() {
 	var calibDef, port, cfgFile string
-	var printReadings, calib, ecProbe, phProbe, runoffSide, irrigSide, printVersion, detectProbes, scanbus bool
+	var printReadings, calib, ecProbe, phProbe, moistureProbe, runoffSide, irrigSide, printVersion, detectProbes, scanbus bool
 	var ecBuffer float64
 
 	flag.BoolVar(&calib, "calib", false, "calibrate something")
@@ -28,6 +28,7 @@ func main() {
 	flag.Float64Var(&ecBuffer, "buffer", 2.77, "EC buffer")
 	flag.BoolVar(&ecProbe, "ec", false, "calibrate an EC probe")
 	flag.BoolVar(&phProbe, "ph", false, "calibrate a pH probe")
+	flag.BoolVar(&moistureProbe, "moisture", false, "calibrate a moisture probe")
 	flag.BoolVar(&runoffSide, "runoff", false, "calibrate a probe for the runoff side")
 	flag.BoolVar(&irrigSide, "irrig", false, "calibrate a probe for the irrig side")
 	flag.BoolVar(&printReadings, "readings", false, "print readings")
@@ -93,6 +94,11 @@ func main() {
 
 	case calib && phProbe:
 		if err := calibratePH(client, runoffSide); err != nil {
+			log.Fatalf("ERROR: %s", err)
+		}
+
+	case calib && moistureProbe:
+		if err := calibrateMoisture(client); err != nil {
 			log.Fatalf("ERROR: %s", err)
 		}
 
@@ -232,6 +238,59 @@ func calibratePH(client *openminder.Client, runoffSide bool) error {
 	}
 
 	err = client.SetCalibration(side+"_ph", scale, offset)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("saved")
+
+	return nil
+}
+
+func calibrateMoisture(client *openminder.Client) error {
+	fmt.Println("make sure the probe is completely dry or in dry media, then push enter...")
+	waitForEnter()
+	for i := 30; i > 0; i-- {
+		fmt.Print("\rwaiting for the readings to settle... ", i, " ")
+		time.Sleep(time.Second)
+	}
+
+	fmt.Println()
+	fmt.Println("taking reading...")
+
+	r, err := client.Readings()
+	if err != nil {
+		return err
+	}
+
+	offset := r.MoistureVoltage
+	fmt.Printf("reading was %0.3f volts\n", offset)
+
+	fmt.Println("place probe in water or completely saturated media, then push enter...")
+	waitForEnter()
+	for i := 30; i > 0; i-- {
+		fmt.Print("\rwaiting for the readings to settle... ", i, " ")
+		time.Sleep(time.Second)
+	}
+
+	fmt.Println()
+	fmt.Println("taking reading...")
+
+	r, err = client.Readings()
+	if err != nil {
+		return err
+	}
+
+	scale := r.MoistureVoltage
+	fmt.Printf("reading was %0.3f pH\n", scale)
+
+	fmt.Printf("calibrated probe, dry voltage=%0.3f wet voltage=%0.3f - save this? [Y/n]: ", scale, offset)
+	if !waitForAnswer(true) {
+		fmt.Println("not saving...")
+		os.Exit(0)
+	}
+
+	err = client.SetCalibration("moisture", scale, offset)
 	if err != nil {
 		return err
 	}

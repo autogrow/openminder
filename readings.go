@@ -23,6 +23,9 @@ type Readings struct {
 	RunoffECRaw     *types.NullFloat `json:"runoff_ec_raw"`
 	RunoffECTemp    *types.NullFloat `json:"runoff_ectemp"`
 	RunoffRatio     float64          `json:"runoff_ratio"`
+	MoistureADC     int              `json:"moisture_adc"`
+	MoistureVoltage float64          `json:"moisture_voltage"`
+	Moisture        float64          `json:"moisture"`
 }
 
 func newReadings() *Readings {
