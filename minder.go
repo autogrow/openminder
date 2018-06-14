@@ -19,7 +19,7 @@ type Minder struct {
 	runoffPH      *PHCircuit
 	irrigTB       *TippingBucket
 	runoffTB      *TippingBucket
-	moisture      *MoistureInput
+	moisture      *MoistureCircuit
 	Readings      *Readings
 	errors        *errorStore
 	onCfgChangeCB func(Config)
@@ -159,7 +159,7 @@ func (mdr *Minder) initADCs() {
 			}
 			err = adc.SetGain(mdr.cfg.MoistureGain)
 			mdr.errors.Add(fmt.Errorf("ERROR: moisture adc gain error: %s", err))
-			mdr.moisture = NewMoistureInput(adc)
+			mdr.moisture = NewMoistureCircuit(adc)
 			return
 		}
 	}()
