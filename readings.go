@@ -1,6 +1,6 @@
 package openminder
 
-import "bitbucket.org/autogrowsystems/openminder/types"
+import "github.com/autogrow/openminder/types"
 
 // Readings represents the readings kept by the minder
 type Readings struct {

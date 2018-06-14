@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"bitbucket.org/autogrowsystems/openminder"
-	"bitbucket.org/autogrowsystems/openminder/aslbus"
-	calibutil "bitbucket.org/autogrowsystems/openminder/calib"
+	"github.com/autogrow/openminder"
+	"github.com/autogrow/openminder/aslbus"
+	calibutil "github.com/autogrow/openminder/calib"
 )
 
 var version = "1.0.0"

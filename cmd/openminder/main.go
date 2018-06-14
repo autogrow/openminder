@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"bitbucket.org/autogrowsystems/openminder"
+	"github.com/autogrow/openminder"
 	"github.com/gin-gonic/gin"
 	"periph.io/x/periph/host"
 )

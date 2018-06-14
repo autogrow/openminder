@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"bitbucket.org/autogrowsystems/openminder/aslbus"
+	"github.com/autogrow/openminder/aslbus"
 )
 
 // Minder is a model that holds the objects that when

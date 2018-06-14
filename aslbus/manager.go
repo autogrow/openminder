@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"bitbucket.org/autogrowsystems/openminder/types"
+	"github.com/autogrow/openminder/types"
 )
 
 // Manager models an ASL bus manager who manages the bus
