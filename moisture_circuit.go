@@ -1,7 +1,7 @@
 package openminder
 
 const (
-	resistorDivider = 1 / 11
+	resistorDivider = 0.09090
 )
 
 // MoistureCircuit models a moisture circuit that contains an ADC

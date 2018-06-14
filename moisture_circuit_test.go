@@ -43,7 +43,7 @@ func TestMoistureCircuit(t *testing.T) {
 				So(err, ShouldBeNil)
 
 				Convey("it should be the correct value", func() {
-					So(f, ShouldEqual, 5.5)
+					So(f, ShouldAlmostEqual, 5.5, 0.01)
 				})
 			})
 		})
