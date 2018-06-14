@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"bitbucket.org/autogrowsystems/openminder/aslbus"
+	"github.com/autogrow/openminder/aslbus"
 )
 
 // Minder is a model that holds the objects that when
@@ -19,6 +19,7 @@ type Minder struct {
 	runoffPH      *PHCircuit
 	irrigTB       *TippingBucket
 	runoffTB      *TippingBucket
+	moisture      *MoistureCircuit
 	Readings      *Readings
 	errors        *errorStore
 	onCfgChangeCB func(Config)
@@ -147,6 +148,21 @@ func (mdr *Minder) initADCs() {
 			return
 		}
 	}()
+
+	go func() {
+		for {
+			adc, err := NewMPC3421(0x70)
+			if err != nil {
+				mdr.errors.Add(fmt.Errorf("ERROR: failed to connect to ADC 3: %s", err))
+				time.Sleep(time.Second)
+				continue
+			}
+			err = adc.SetGain(mdr.cfg.MoistureGain)
+			mdr.errors.Add(fmt.Errorf("ERROR: moisture adc gain error: %s", err))
+			mdr.moisture = NewMoistureCircuit(adc)
+			return
+		}
+	}()
 }
 
 // Start the minder loop
@@ -158,6 +174,7 @@ func (mdr *Minder) Start() {
 
 		mdr.readECProbes()
 		mdr.readPHProbes()
+		mdr.readMoistureProbe()
 		time.Sleep(time.Second)
 	}
 }
@@ -189,6 +206,19 @@ func (mdr *Minder) readPHProbes() {
 		mdr.Readings.RunoffPHRaw, err = mdr.runoffPH.Value()
 		mdr.errors.Add(err)
 		mdr.Readings.RunoffPH, err = mdr.tr.Translate("runoff_ph", mdr.Readings.RunoffPHRaw)
+		mdr.errors.Add(err)
+	}
+}
+
+func (mdr *Minder) readMoistureProbe() {
+	var err error
+
+	if mdr.moisture != nil {
+		mdr.Readings.MoistureADC, err = mdr.moisture.AnalogRead()
+		mdr.errors.Add(err)
+		mdr.Readings.MoistureVoltage, err = mdr.moisture.Read()
+		mdr.errors.Add(err)
+		mdr.Readings.Moisture, err = mdr.tr.Translate("moisture", mdr.Readings.MoistureVoltage)
 		mdr.errors.Add(err)
 	}
 }

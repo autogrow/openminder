@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"bitbucket.org/autogrowsystems/openminder/aslbus"
+	"github.com/autogrow/openminder/aslbus"
 )
 
 func main() {

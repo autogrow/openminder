@@ -11,6 +11,7 @@ var translatableFields = []string{
 	"runoff_ec",
 	"irrig_volume",
 	"runoff_volume",
+	"moisture",
 }
 
 // ErrNotTranslatable is returned by the Translater when a field is not translatable
@@ -38,6 +39,10 @@ type calibration struct {
 
 func (c calibration) Transform(v float64) float64 {
 	return (v * c.Scale) + c.Offset
+}
+
+func (c calibration) TransformPercent(v float64) float64 {
+	return ((v - c.Offset) / c.Scale) * 100
 }
 
 // SetCalibration sets the calibration for the given field
@@ -68,6 +73,10 @@ func (tr *Translater) Translate(field string, value float64) (float64, error) {
 	c, err := tr.getCalibration(field)
 	if err != nil {
 		return value, fmt.Errorf("can't find calibration constant for %s", field)
+	}
+
+	if field == "moisture" {
+		return c.TransformPercent(value), nil
 	}
 
 	return c.Transform(float64(value)), nil

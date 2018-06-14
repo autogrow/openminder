@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"bitbucket.org/autogrowsystems/openminder/aslbus"
+	"github.com/autogrow/openminder/aslbus"
 
 	"gobot.io/x/gobot/sysfs"
 )

@@ -28,6 +28,9 @@ type Config struct {
 	// TTY is the bus to use for the ASL Bus comms
 	TTY string `json:"tty"`
 
+	// MoistureGain is the gain to use with the moisture probe this should be 1,2,4 or 8
+	MoistureGain int `json:"moisture_gain"`
+
 	DrippersPerPlant int `json:"drippers_per_plant"`
 	RunoffDrippers   int `json:"runoff_drippers"`
 	IrrigDrippers    int `json:"irrig_drippers"`
